@@ -6,8 +6,8 @@ import { FiClock, FiEdit2, FiImage, FiPlus, FiSearch, FiStar, FiTag, FiTrash2, F
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { CreateNote, Note, notesService } from '../services/notesService';
-import { Modal } from './ui/Modal';
 import { Card } from './ui/card';
+import { Modal } from './ui/Modal';
 
 export function MarkdownNotes() {
   const { user } = useAuth();
