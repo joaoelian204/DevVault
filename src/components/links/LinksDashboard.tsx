@@ -1,9 +1,9 @@
+import { Modal } from '@/components/ui/Modal';
 import { motion } from "framer-motion";
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiPlus } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { Modal } from '../../components/ui/Modal';
 import { useLinks } from '../../hooks/useLinks';
 import LinkCard from './LinkCard';
 
