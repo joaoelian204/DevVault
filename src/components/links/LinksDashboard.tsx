@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiPlus } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { Modal } from '../../components/ui/Modal';
 import { useLinks } from '../../hooks/useLinks';
+import { Modal } from '../ui/Modal';
 import LinkCard from './LinkCard';
 
 export default function LinksDashboard() {

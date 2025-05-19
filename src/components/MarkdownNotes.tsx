@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiClock, FiEdit2, FiImage, FiPlus, FiSearch, FiStar, FiTag, FiTrash2, FiX } from 'react-icons/fi';
 import { useParams } from 'react-router-dom';
-import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../context/AuthContext';
 import { CreateNote, Note, notesService } from '../services/notesService';
 import { Card } from './ui/card';
+import { Modal } from './ui/Modal';
 
 export function MarkdownNotes() {
   const { user } = useAuth();
@@ -312,8 +312,8 @@ export function MarkdownNotes() {
       <Modal
         isOpen={modalEliminar.isOpen}
         onClose={() => setModalEliminar({ isOpen: false, notaId: null })}
-        onConfirm={() => {
-          if (modalEliminar.notaId) {
+        onConfirm={(value) => {
+          if (value && modalEliminar.notaId) {
             handleEliminarNota(modalEliminar.notaId);
           }
         }}
@@ -329,9 +329,9 @@ export function MarkdownNotes() {
       <Modal
         isOpen={modalEditarTitulo.isOpen}
         onClose={() => setModalEditarTitulo({ isOpen: false, notaId: null, tituloActual: '' })}
-        onConfirm={(nuevoTitulo) => {
-          if (modalEditarTitulo.notaId && nuevoTitulo) {
-            handleEditarTitulo(modalEditarTitulo.notaId, nuevoTitulo);
+        onConfirm={(value) => {
+          if (modalEditarTitulo.notaId && value) {
+            handleEditarTitulo(modalEditarTitulo.notaId, value);
           }
         }}
         title="Editar título"
@@ -347,9 +347,9 @@ export function MarkdownNotes() {
       <Modal
         isOpen={modalImagen.isOpen}
         onClose={() => setModalImagen({ isOpen: false, url: '' })}
-        onConfirm={(url) => {
-          if (url) {
-            handleInsertarImagen(url);
+        onConfirm={(value) => {
+          if (value) {
+            handleInsertarImagen(value);
           }
         }}
         title="Insertar imagen"
