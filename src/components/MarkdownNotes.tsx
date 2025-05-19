@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiClock, FiEdit2, FiImage, FiPlus, FiSearch, FiStar, FiTag, FiTrash2, FiX } from 'react-icons/fi';
 import { useParams } from 'react-router-dom';
+import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../context/AuthContext';
 import { CreateNote, Note, notesService } from '../services/notesService';
 import { Card } from './ui/card';
-import { Modal } from './ui/Modal';
 
 export function MarkdownNotes() {
   const { user } = useAuth();
