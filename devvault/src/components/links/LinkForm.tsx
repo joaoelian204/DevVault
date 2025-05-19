@@ -37,7 +37,7 @@ export default function LinkForm() {
           if (link) {
             setForm({
               ...link,
-              tags: Array.isArray(link.tags) ? link.tags.join(', ') : link.tags,
+              tags: Array.isArray(link.tags) ? link.tags.join(', ') : '',
             });
           }
         } catch (err: any) {

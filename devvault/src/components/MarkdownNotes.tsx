@@ -312,8 +312,8 @@ export function MarkdownNotes() {
       <Modal
         isOpen={modalEliminar.isOpen}
         onClose={() => setModalEliminar({ isOpen: false, notaId: null })}
-        onConfirm={(value?: string) => {
-          if (value && modalEliminar.notaId) {
+        onConfirm={() => {
+          if (modalEliminar.notaId) {
             handleEliminarNota(modalEliminar.notaId);
           }
         }}

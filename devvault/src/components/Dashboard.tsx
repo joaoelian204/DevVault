@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { FiArrowRight, FiCode, FiFileText, FiLink, FiPlus, FiSave, FiSearch, FiTag, FiTrendingUp, FiX } from 'react-icons/fi';
+import { FiArrowRight, FiCode, FiFileText, FiFilter, FiLink, FiPlus, FiSave, FiSearch, FiTrendingUp, FiX } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -484,30 +484,39 @@ export function Dashboard() {
 
         {/* Search and filters */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between px-4 sm:px-6">
             <div className="relative flex-1">
-              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar en todos los recursos..."
-                className="w-full pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-10 py-3 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                  title="Limpiar búsqueda"
+                >
+                  <FiX className="w-5 h-5" />
+                </button>
+              )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-shrink-0 mt-4 md:mt-0">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-2 shadow-sm"
               >
-                <FiTag className="w-4 h-4" />
+                <FiFilter className="w-4 h-4" />
                 Filtros
               </button>
               <select
                 aria-label="Ordenar por"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                className="px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="recent">Más recientes</option>
                 <option value="favorites">Favoritos</option>
@@ -522,16 +531,16 @@ export function Dashboard() {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="mt-4 flex flex-wrap gap-2"
+                className="mt-4 flex flex-wrap justify-center gap-2 -mx-4 sm:-mx-6 px-4 sm:px-6"
               >
                 {(['all', 'link', 'snippet', 'note'] as const).map((type) => (
                   <button
                     key={type}
                     onClick={() => setFilterType(type)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    className={`px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap min-w-[80px] sm:min-w-0 ${
                       filterType === type
                         ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {type === 'all' ? 'Todos' : 
@@ -560,7 +569,7 @@ export function Dashboard() {
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
                   {getItemIcon(item.type)}
-                  <h3 className="font-medium text-gray-900 dark:text-white truncate">
+                  <h3 className="font-medium text-gray-900 dark:text-white break-words">
                     {item.title}
                   </h3>
                 </div>

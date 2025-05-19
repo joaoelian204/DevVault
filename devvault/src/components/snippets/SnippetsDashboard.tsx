@@ -7,6 +7,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
+import { Modal } from '../ui/Modal';
 
 interface Snippet {
   id: string;
@@ -60,6 +61,7 @@ export default function SnippetsDashboard() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
   const [snippetToDelete, setSnippetToDelete] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchSnippets();
@@ -85,6 +87,7 @@ export default function SnippetsDashboard() {
 
   const handleDelete = async (id: string) => {
     setSnippetToDelete(id);
+    setIsModalOpen(true);
   };
 
   const confirmDelete = async () => {
@@ -105,6 +108,7 @@ export default function SnippetsDashboard() {
       toast.error('Error al eliminar el snippet');
     } finally {
       setSnippetToDelete(null);
+      setIsModalOpen(false);
     }
   };
 
@@ -349,49 +353,21 @@ export default function SnippetsDashboard() {
         </motion.div>
       )}
 
-      {/* Delete Confirmation Modal */}
-      <AnimatePresence>
-        {snippetToDelete && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full shadow-xl"
-            >
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                ¿Eliminar snippet?
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Esta acción no se puede deshacer. ¿Estás seguro de que quieres eliminar este snippet?
-              </p>
-              <div className="flex justify-end gap-3">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setSnippetToDelete(null)}
-                  className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                >
-                  Cancelar
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={confirmDelete}
-                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-                >
-                  Eliminar
-                </motion.button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Modal de confirmación de eliminación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSnippetToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        title="¿Eliminar snippet?"
+        description="Esta acción no se puede deshacer. ¿Estás seguro de que quieres eliminar este snippet?"
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        type="confirm"
+        icon="alert"
+      />
     </div>
   );
 } 

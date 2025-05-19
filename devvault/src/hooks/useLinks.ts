@@ -13,14 +13,14 @@ export function useLinks() {
     setLoading(true)
     const { data, error } = await supabase
       .from('links')
-      .select('*')
+      .select('id, title, url, description, tags, category, image_url, is_favorite')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
     if (!error) setLinks(data || [])
     setLoading(false)
   }, [user])
 
-  const getLink = async (id: string) => {
+  const getLink = useCallback(async (id: string) => {
     if (!user) return null
     const { data, error } = await supabase
       .from('links')
@@ -30,7 +30,7 @@ export function useLinks() {
       .single()
     if (error) throw error
     return data
-  }
+  }, [user])
 
   const addLink = async (link: any) => {
     if (!user) {
